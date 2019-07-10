@@ -1,0 +1,104 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "allowedLocations": {
+            "type": "array",
+            "metadata": {
+                "description": "The list of allowed locations for resources.",
+                "displayName": "Allowed locations",
+                "strongType": "location"
+            },
+            "defaultValue": "australiaeast"
+        },
+        "tagName": {
+            "type": "array",
+            "metadata": {
+                "displayName": "Tag Name",
+                "description": "Name of the tag, such as 'environment'"
+            }
+        }
+    },
+    "resources": [
+        {
+            "comments": "Custom rule for locations",
+            "type": "Microsoft.Authorization/policyDefinitions",
+            "name": "locationpolicy",
+            "apiVersion": "2018-05-01",
+            "properties": {
+                "policyType": "Custom",
+                "parameters": {},
+                "policyRule": {
+                    "if": {
+                        "allOf": [
+                            {
+                                "field": "location",
+                                "notIn": "[parameters('allowedLocations')]"
+                            },
+                            {
+                                "field": "location",
+                                "notEquals": "global"
+                            }
+                        ]
+                    },
+                    "then": {
+                        "effect": "deny"
+                    }
+                }
+            }
+        },
+        {
+            "comments": "Custom rule for tags",
+            "type": "Microsoft.Authorization/policyDefinitions",
+            "name": "[concat('tagPolicy-', parameters('tagName')[copyIndex()])]",
+            "copy": {
+                "count": "[length(parameters('tagName'))]",
+                "name": "tagNamescopies"
+            },
+            "apiVersion": "2018-05-01",
+            "properties": {
+                "policyType": "Custom",
+                "parameters": {},
+                "policyRule": {
+                    "if": {
+                        "field": "[concat('tags[', parameters('tagName')[copyIndex()], ']')]",
+                        "exists": "false"
+                    },
+                    "then": {
+                        "effect": "deny"
+                    }
+                }
+            }
+        },
+        {
+            "comments": "Assign the Location Ristriction at subscription level.",
+            "type": "Microsoft.Authorization/policyAssignments",
+            "name": "ARM Defined location locks",
+            "apiVersion": "2018-05-01",
+            "dependsOn": [
+                "locationpolicy"
+            ],
+            "properties": {
+                "scope": "[subscription().id]",
+                "policyDefinitionId": "[resourceId('Microsoft.Authorization/policyDefinitions', 'locationpolicy')]"
+            }
+        },
+        {
+            "comments": "ARM Defined Tag Policy at subscription level.",
+            "type": "Microsoft.Authorization/policyAssignments",
+            "name": "[concat('ARM Defined Tag Policy-', parameters('tagName')[copyIndex()])]",
+            "apiVersion": "2018-05-01",
+            "copy": {
+                "count": "[length(parameters('tagName'))]",
+                "name": "tagNamescopies-create"
+            },
+            "dependsOn": [
+                "[concat('tagPolicy-', parameters('tagName')[copyIndex()])]"
+            ],
+            "properties": {
+                "scope": "[subscription().id]",
+                "policyDefinitionId": "[resourceId('Microsoft.Authorization/policyDefinitions', concat('tagPolicy-', parameters('tagName')[copyIndex()]))]"
+            }
+        }
+    ]
+}
