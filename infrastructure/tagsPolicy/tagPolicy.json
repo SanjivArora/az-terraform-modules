@@ -2,7 +2,7 @@
     "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-        "tagName": {
+        "tagNames": {
             "type": "array",
             "metadata": {
                 "displayName": "Tag Name",
@@ -14,9 +14,9 @@
         {
             "comments": "Custom rule for tags",
             "type": "Microsoft.Authorization/policyDefinitions",
-            "name": "[concat('tagPolicy-', parameters('tagName')[copyIndex()])]",
+            "name": "[concat('tagPolicy-', parameters('tagNames')[copyIndex()])]",
             "copy": {
-                "count": "[length(parameters('tagName'))]",
+                "count": "[length(parameters('tagNames'))]",
                 "name": "tagNamescopies"
             },
             "apiVersion": "2018-05-01",
@@ -25,7 +25,7 @@
                 "parameters": {},
                 "policyRule": {
                     "if": {
-                        "field": "[concat('tags[', parameters('tagName')[copyIndex()], ']')]",
+                        "field": "[concat('tags[', parameters('tagNames')[copyIndex()], ']')]",
                         "exists": "false"
                     },
                     "then": {
@@ -37,18 +37,18 @@
         {
             "comments": "ARM Defined Tag Policy at subscription level.",
             "type": "Microsoft.Authorization/policyAssignments",
-            "name": "[concat('ARM Defined Tag Policy-', parameters('tagName')[copyIndex()])]",
+            "name": "[concat('ARM Defined Tag Policy-', parameters('tagNames')[copyIndex()])]",
             "apiVersion": "2018-05-01",
             "copy": {
-                "count": "[length(parameters('tagName'))]",
+                "count": "[length(parameters('tagNames'))]",
                 "name": "tagNamescopies-create"
             },
             "dependsOn": [
-                "[concat('tagPolicy-', parameters('tagName')[copyIndex()])]"
+                "[concat('tagPolicy-', parameters('tagNames')[copyIndex()])]"
             ],
             "properties": {
                 "scope": "[subscription().id]",
-                "policyDefinitionId": "[resourceId('Microsoft.Authorization/policyDefinitions', concat('tagPolicy-', parameters('tagName')[copyIndex()]))]"
+                "policyDefinitionId": "[resourceId('Microsoft.Authorization/policyDefinitions', concat('tagPolicy-', parameters('tagNames')[copyIndex()]))]"
             }
         }
     ]
