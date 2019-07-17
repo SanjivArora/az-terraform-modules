@@ -1,0 +1,55 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "tagName": {
+            "type": "array",
+            "metadata": {
+                "displayName": "Tag Name",
+                "description": "Name of the tag, such as 'environment'"
+            }
+        }
+    },
+    "resources": [
+        {
+            "comments": "Custom rule for tags",
+            "type": "Microsoft.Authorization/policyDefinitions",
+            "name": "[concat('tagPolicy-', parameters('tagName')[copyIndex()])]",
+            "copy": {
+                "count": "[length(parameters('tagName'))]",
+                "name": "tagNamescopies"
+            },
+            "apiVersion": "2018-05-01",
+            "properties": {
+                "policyType": "Custom",
+                "parameters": {},
+                "policyRule": {
+                    "if": {
+                        "field": "[concat('tags[', parameters('tagName')[copyIndex()], ']')]",
+                        "exists": "false"
+                    },
+                    "then": {
+                        "effect": "deny"
+                    }
+                }
+            }
+        },
+        {
+            "comments": "ARM Defined Tag Policy at subscription level.",
+            "type": "Microsoft.Authorization/policyAssignments",
+            "name": "[concat('ARM Defined Tag Policy-', parameters('tagName')[copyIndex()])]",
+            "apiVersion": "2018-05-01",
+            "copy": {
+                "count": "[length(parameters('tagName'))]",
+                "name": "tagNamescopies-create"
+            },
+            "dependsOn": [
+                "[concat('tagPolicy-', parameters('tagName')[copyIndex()])]"
+            ],
+            "properties": {
+                "scope": "[subscription().id]",
+                "policyDefinitionId": "[resourceId('Microsoft.Authorization/policyDefinitions', concat('tagPolicy-', parameters('tagName')[copyIndex()]))]"
+            }
+        }
+    ]
+}
