@@ -7,7 +7,14 @@
         },
         "pagerdutyUri": {
             "type": "string"
+        },
+        "environment": {
+            "type": "string"
+        },
+        "application": {
+            "type": "string"
         }
+        
     },
     "variables": {},
     "resources": [
@@ -19,8 +26,8 @@
             "location": "Global",
             "kind": null,
             "tags": {
-                "Application":"ServiceAlerts",
-                "Environment":"development"
+                "Application":"[parameters('application')]",
+                "Environment":"[parameters('environment')]"
             },
             "properties": {
                 "groupShortName": "healthadvise",
@@ -58,8 +65,8 @@
             "location": "Global",
             "kind": null,
             "tags": {
-                "Application":"ServiceAlerts",
-                "Environment":"development"
+                "Application":"[parameters('application')]",
+                "Environment":"[parameters('environment')]"
             },
             "properties": {
                 "groupShortName": "plannedMAl",
@@ -97,8 +104,8 @@
             "location": "Global",
             "kind": null,
             "tags": {
-                "Application":"ServiceAlerts",
-                "Environment":"development"
+                "Application":"[parameters('application')]",
+                "Environment":"[parameters('environment')]"
             },
             "properties": {
                 "groupShortName": "serviceAlert",
