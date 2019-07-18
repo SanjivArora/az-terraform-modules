@@ -4,9 +4,15 @@
   "parameters": {
     "emailAddress": {
       "value": "ajit.garikipati@equinox.co.nz"
-  },
-  "pagerdutyUri": {
+    },
+    "pagerdutyUri": {
       "value": "https://events.pagerduty.com/integration/b93dcb34b6e34904b520e9a24ebfb4a9/enqueue"
-  }
+    },
+    "environment": {
+      "value": ""
+    },
+    "application": {
+      "value": ""
+    }
   }
 }
