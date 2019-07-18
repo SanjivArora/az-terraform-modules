@@ -1,7 +1,14 @@
 {
     "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
-    "parameters": {},
+    "parameters": {
+        "environment": {
+            "type": "string"
+        },
+        "application": {
+            "type": "string"
+        }
+    },
     "variables": {},
     "resources": [
         {
@@ -10,7 +17,10 @@
             "name": "Service Issue Alert",
             "location": "Global",
             "kind": null,
-            "tags": {},
+            "tags": {
+                "Application":"[parameters('application')]",
+                "Environment":"[parameters('environment')]"
+            },
             "properties": {
                 "scopes": [
                     "[concat('/','subscriptions','/',subscription().subscriptionId)]"
@@ -22,6 +32,15 @@
                             "equals": "ServiceHealth",
                             "containsAny": null,
                             "odata.type": null
+                        },
+                        {
+                            "anyOf": [
+                                {
+                                    "field": "properties.cause",
+                                    "equals": "PlatformInitiated",
+                                    "containsAny": null
+                                }
+                            ]
                         },
                         {
                             "anyOf": [
@@ -56,7 +75,10 @@
             "name": "Health Advisory Alert",
             "location": "Global",
             "kind": null,
-            "tags": {},
+            "tags": {
+                "Application":"[parameters('application')]",
+                "Environment":"[parameters('environment')]"
+            },
             "properties": {
                 "scopes": [
                     "[concat('/','subscriptions','/',subscription().subscriptionId)]"
@@ -73,10 +95,16 @@
                             "anyOf": [
                                 {
                                     "field": "properties.incidentType",
-                                    "equals": "Incident",
+                                    "equals": "Informational",
                                     "containsAny": null,
                                     "odata.type": null
-                                }
+                                  },
+                                  {
+                                    "field": "properties.incidentType",
+                                    "equals": "ActionRequired",
+                                    "containsAny": null,
+                                    "odata.type": null
+                                  }
                             ],
                             "odata.type": null
                         }
@@ -102,7 +130,10 @@
             "name": "Planned Maintenance Alert",
             "location": "Global",
             "kind": null,
-            "tags": {},
+            "tags": {
+                "Application":"[parameters('application')]",
+                "Environment":"[parameters('environment')]"
+            },
             "properties": {
                 "scopes": [
                     "[concat('/','subscriptions','/',subscription().subscriptionId)]"
@@ -119,7 +150,7 @@
                             "anyOf": [
                                 {
                                     "field": "properties.incidentType",
-                                    "equals": "Incident",
+                                    "equals": "Maintenance",
                                     "containsAny": null,
                                     "odata.type": null
                                 }
