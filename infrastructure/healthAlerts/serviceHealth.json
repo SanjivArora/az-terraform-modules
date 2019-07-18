@@ -1,123 +1,147 @@
 {
     "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
-    "parameters": {
-        "actionGroups_name": {
-            "defaultValue": "ProdHealthActionGroup",
-            "type": "string"
-        },
-        "activityLogAlerts_name": {
-            "defaultValue": "ServiceHealthAlert",
-            "type": "string"
-        },
-        "emailAddress": {
-            "type": "string"
-        },
-        "actionGroups_ShortName": {
-            "type": "string"
-        }
-    },
-    "variables": {
-        "alertScope": "[concat('/','subscriptions','/',subscription().subscriptionId)]"
-    },
+    "parameters": {},
+    "variables": {},
     "resources": [
         {
-            "comments": "Action Group for Service Health Alert",
-            "type": "microsoft.insights/actionGroups",
-            "name": "[parameters('actionGroups_name')]",
+            "type": "Microsoft.Insights/ActivityLogAlerts",
             "apiVersion": "2017-04-01",
+            "name": "Service Issue Alert",
             "location": "Global",
+            "kind": null,
             "tags": {},
-            "scale": null,
-            "properties": {
-                "groupShortName": "[parameters('actionGroups_ShortName')]",
-                "enabled": true,
-                "emailReceivers": [
-                    {
-                        "name": "[parameters('actionGroups_name')]",
-                        "emailAddress": "[parameters('emailAddress')]"
-                    }
-                ],
-                "webhookReceivers": [
-                    {
-                        "name": "pagerDutyCall",
-                        "serviceUri": "https://events.pagerduty.com/integration/b93dcb34b6e34904b520e9a24ebfb4a9/enqueue",
-                        "useCommonAlertSchema": false
-                    }
-                ]
-            },
-            "dependsOn": []
-        },
-        {
-            "comments": "Service Health Activity Log Alert Ref: https://github.com/MicrosoftDocs/azure-docs/blob/master/articles/service-health/resource-health-alert-arm-template-guide.md",
-            "type": "microsoft.insights/activityLogAlerts",
-            "name": "[parameters('activityLogAlerts_name')]",
-            "apiVersion": "2017-04-01",
-            "location": "Global",
-            "tags": {
-                "Application": "ServiceAlerts"
-            },
-            "scale": null,
             "properties": {
                 "scopes": [
-                    "[variables('alertScope')]"
+                    "[concat('/','subscriptions','/',subscription().subscriptionId)]"
                 ],
-                "enabled": true,
-                "description": "ARM based Service Issue Alert",
                 "condition": {
                     "allOf": [
                         {
                             "field": "category",
                             "equals": "ServiceHealth",
-                            "containsAny": null
+                            "containsAny": null,
+                            "odata.type": null
                         },
                         {
                             "anyOf": [
                                 {
-                                    "field": "properties.cause",
-                                    "equals": "PlatformInitiated",
-                                    "containsAny": null
+                                    "field": "properties.incidentType",
+                                    "equals": "Incident",
+                                    "containsAny": null,
+                                    "odata.type": null
                                 }
-                            ]
-                        },
-                        {
-                            "anyOf": [
-                                {
-                                    "field": "status",
-                                    "equals": "Active",
-                                    "containsAny": null
-                                },
-                                {
-                                    "field": "status",
-                                    "equals": "Resolved",
-                                    "containsAny": null
-                                },
-                                {
-                                    "field": "status",
-                                    "equals": "InProgress",
-                                    "containsAny": null
-                                },
-                                {
-                                    "field": "status",
-                                    "equals": "Updated",
-                                    "containsAny": null
-                                }
-                            ]
+                            ],
+                            "odata.type": null
                         }
-                    ]
+                    ],
+                    "odata.type": null
                 },
                 "actions": {
                     "actionGroups": [
                         {
-                            "actionGroupId": "[resourceId('microsoft.insights/actionGroups', parameters('actionGroups_name'))]",
+                            "actionGroupId": "[resourceId('microsoft.insights/actiongroups','Service Issue Action')]",
                             "webhookProperties": {}
                         }
                     ]
-                }
+                },
+                "enabled": true,
+                "description": "Service Issue Alert"
             },
-            "dependsOn": [
-                "[resourceId('microsoft.insights/actionGroups', parameters('actionGroups_name'))]"
-            ]
+            "identity": null
+        },
+        {
+            "type": "Microsoft.Insights/ActivityLogAlerts",
+            "apiVersion": "2017-04-01",
+            "name": "Health Advisory Alert",
+            "location": "Global",
+            "kind": null,
+            "tags": {},
+            "properties": {
+                "scopes": [
+                    "[concat('/','subscriptions','/',subscription().subscriptionId)]"
+                ],
+                "condition": {
+                    "allOf": [
+                        {
+                            "field": "category",
+                            "equals": "ServiceHealth",
+                            "containsAny": null,
+                            "odata.type": null
+                        },
+                        {
+                            "anyOf": [
+                                {
+                                    "field": "properties.incidentType",
+                                    "equals": "Incident",
+                                    "containsAny": null,
+                                    "odata.type": null
+                                }
+                            ],
+                            "odata.type": null
+                        }
+                    ],
+                    "odata.type": null
+                },
+                "actions": {
+                    "actionGroups": [
+                        {
+                            "actionGroupId": "[resourceId('microsoft.insights/actiongroups','Health Advisory Action')]",
+                            "webhookProperties": {}
+                        }
+                    ]
+                },
+                "enabled": true,
+                "description": "Service Issue Alert"
+            },
+            "identity": null
+        },
+        {
+            "type": "Microsoft.Insights/ActivityLogAlerts",
+            "apiVersion": "2017-04-01",
+            "name": "Planned Maintenance Alert",
+            "location": "Global",
+            "kind": null,
+            "tags": {},
+            "properties": {
+                "scopes": [
+                    "[concat('/','subscriptions','/',subscription().subscriptionId)]"
+                ],
+                "condition": {
+                    "allOf": [
+                        {
+                            "field": "category",
+                            "equals": "ServiceHealth",
+                            "containsAny": null,
+                            "odata.type": null
+                        },
+                        {
+                            "anyOf": [
+                                {
+                                    "field": "properties.incidentType",
+                                    "equals": "Incident",
+                                    "containsAny": null,
+                                    "odata.type": null
+                                }
+                            ],
+                            "odata.type": null
+                        }
+                    ],
+                    "odata.type": null
+                },
+                "actions": {
+                    "actionGroups": [
+                        {
+                            "actionGroupId": "[resourceId('microsoft.insights/actiongroups','Planned Maintenance Action')]",
+                            "webhookProperties": {}
+                        }
+                    ]
+                },
+                "enabled": true,
+                "description": "Service Issue Alert"
+            },
+            "identity": null
         }
-    ]
+    ],
+    "outputs": {}
 }
