@@ -1,0 +1,144 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "emailAddress": {
+            "type": "string"
+        },
+        "pagerdutyUri": {
+            "type": "string"
+        }
+    },
+    "variables": {},
+    "resources": [
+        {
+            "comments": "This Action group is for Resource Health Advisory. The RoleID is hard coded for the Owner",
+            "type": "Microsoft.Insights/ActionGroups",
+            "apiVersion": "2017-04-01",
+            "name": "Health Advisory Action",
+            "location": "Global",
+            "kind": null,
+            "tags": {
+                "Application":"ServiceAlerts",
+                "Environment":"development"
+            },
+            "properties": {
+                "groupShortName": "healthadvise",
+                "enabled": true,
+                "emailReceivers": [
+                    {
+                        "name": "emailAction_-EmailAction-",
+                        "emailAddress": "[parameters('emailAddress')]",
+                        "status": "Enabled",
+                        "useCommonAlertSchema": false
+                    }
+                ],
+                "smsReceivers": [],
+                "webhookReceivers": [],
+                "itsmReceivers": [],
+                "azureAppPushReceivers": [],
+                "automationRunbookReceivers": [],
+                "voiceReceivers": [],
+                "logicAppReceivers": [],
+                "azureFunctionReceivers": [],
+                "armRoleReceivers": [
+                    {
+                        "name": "emailAction_-EmailARMRole-",
+                        "roleId": "8e3af657-a8ff-443c-a75c-2fe8c4bcb635",
+                        "useCommonAlertSchema": false
+                    }
+                ]
+            },
+            "identity": null
+        },
+        {
+            "type": "Microsoft.Insights/ActionGroups",
+            "apiVersion": "2017-04-01",
+            "name": "Planned Maintenance Action",
+            "location": "Global",
+            "kind": null,
+            "tags": {
+                "Application":"ServiceAlerts",
+                "Environment":"development"
+            },
+            "properties": {
+                "groupShortName": "plannedMAl",
+                "enabled": true,
+                "emailReceivers": [
+                    {
+                        "name": "emailAction_-EmailAction-",
+                        "emailAddress": "[parameters('emailAddress')]",
+                        "status": "Enabled",
+                        "useCommonAlertSchema": false
+                    }
+                ],
+                "smsReceivers": [],
+                "webhookReceivers": [],
+                "itsmReceivers": [],
+                "azureAppPushReceivers": [],
+                "automationRunbookReceivers": [],
+                "voiceReceivers": [],
+                "logicAppReceivers": [],
+                "azureFunctionReceivers": [],
+                "armRoleReceivers": [
+                    {
+                        "name": "emailAction_-EmailARMRole-",
+                        "roleId": "8e3af657-a8ff-443c-a75c-2fe8c4bcb635",
+                        "useCommonAlertSchema": false
+                    }
+                ]
+            },
+            "identity": null
+        },
+        {
+            "type": "Microsoft.Insights/ActionGroups",
+            "apiVersion": "2017-04-01",
+            "name": "Service Issue Action",
+            "location": "Global",
+            "kind": null,
+            "tags": {
+                "Application":"ServiceAlerts",
+                "Environment":"development"
+            },
+            "properties": {
+                "groupShortName": "serviceAlert",
+                "enabled": true,
+                "emailReceivers": [
+                    {
+                        "name": "serviceAlertEmail_-EmailAction-",
+                        "emailAddress": "[parameters('emailAddress')]",
+                        "status": "Enabled",
+                        "useCommonAlertSchema": false
+                    }
+                ],
+                "smsReceivers": [],
+                "webhookReceivers": [
+                    {
+                        "name": "pagerduty",
+                        "serviceUri": "[parameters('pagerdutyUri')]",
+                        "useCommonAlertSchema": false,
+                        "useAadAuth": false,
+                        "objectId": null,
+                        "identifierUri": null,
+                        "tenantId": null
+                    }
+                ],
+                "itsmReceivers": [],
+                "azureAppPushReceivers": [],
+                "automationRunbookReceivers": [],
+                "voiceReceivers": [],
+                "logicAppReceivers": [],
+                "azureFunctionReceivers": [],
+                "armRoleReceivers": [
+                    {
+                        "name": "serviceAlertEmail_-EmailARMRole-",
+                        "roleId": "8e3af657-a8ff-443c-a75c-2fe8c4bcb635",
+                        "useCommonAlertSchema": false
+                    }
+                ]
+            },
+            "identity": null
+        }
+    ],
+    "outputs": {}
+}
