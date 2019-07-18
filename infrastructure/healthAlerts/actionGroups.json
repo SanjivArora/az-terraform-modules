@@ -14,7 +14,6 @@
         "application": {
             "type": "string"
         }
-        
     },
     "variables": {},
     "resources": [
@@ -26,8 +25,8 @@
             "location": "Global",
             "kind": null,
             "tags": {
-                "Application":"[parameters('application')]",
-                "Environment":"[parameters('environment')]"
+                "Application": "[parameters('application')]",
+                "Environment": "[parameters('environment')]"
             },
             "properties": {
                 "groupShortName": "healthadvise",
@@ -65,8 +64,8 @@
             "location": "Global",
             "kind": null,
             "tags": {
-                "Application":"[parameters('application')]",
-                "Environment":"[parameters('environment')]"
+                "Application": "[parameters('application')]",
+                "Environment": "[parameters('environment')]"
             },
             "properties": {
                 "groupShortName": "plannedMAl",
@@ -104,8 +103,8 @@
             "location": "Global",
             "kind": null,
             "tags": {
-                "Application":"[parameters('application')]",
-                "Environment":"[parameters('environment')]"
+                "Application": "[parameters('application')]",
+                "Environment": "[parameters('environment')]"
             },
             "properties": {
                 "groupShortName": "serviceAlert",
