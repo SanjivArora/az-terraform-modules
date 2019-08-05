@@ -1,0 +1,53 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "emailAddress": {
+            "type": "string"
+        },
+        "environment": {
+            "type": "string"
+        },
+        "application": {
+            "type": "string"
+        }
+    },
+    "variables": {},
+    "resources": [
+        {
+            "comments": "This Action group is for Budget Alert notification",
+            "type": "Microsoft.Insights/ActionGroups",
+            "apiVersion": "2017-04-01",
+            "name": "Budget Alert Action",
+            "location": "Global",
+            "kind": null,
+            "tags": {
+                "Application": "[parameters('application')]",
+                "Environment": "[parameters('environment')]"
+            },
+            "properties": {
+                "groupShortName": "budgetAlert",
+                "enabled": true,
+                "emailReceivers": [
+                    {
+                        "name": "emailAction_-EmailAction-",
+                        "emailAddress": "[parameters('emailAddress')]",
+                        "status": "Enabled",
+                        "useCommonAlertSchema": false
+                    }
+                ],
+                "smsReceivers": [],
+                "webhookReceivers": [],
+                "itsmReceivers": [],
+                "azureAppPushReceivers": [],
+                "automationRunbookReceivers": [],
+                "voiceReceivers": [],
+                "logicAppReceivers": [],
+                "azureFunctionReceivers": [],
+                "armRoleReceivers": []
+            },
+            "identity": null
+        }
+    ],
+    "outputs": {}
+}
