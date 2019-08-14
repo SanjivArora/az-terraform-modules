@@ -2,51 +2,170 @@
     "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-        "emailAddress": {
-            "type": "string"
+        "contactEmails": {
+            "type": "array"
         },
-        "environment": {
-            "type": "string"
+        "subMonthlyAmount": {
+            "type": "string",
+            "defaultValue": "1000"
         },
-        "application": {
-            "type": "string"
+        "subQuarterlyAmount": {
+            "type": "string",
+            "defaultValue": "1000"
+        },
+        "subAnnualAmount": {
+            "type": "string",
+            "defaultValue": "1000"
+        },
+        "first-threshold": {
+            "type": "string",
+            "defaultValue": "50"
+        },
+        "second-threshold": {
+            "type": "string",
+            "defaultValue": "70"
+        },
+        "third-threshold": {
+            "type": "string",
+            "defaultValue": "90"
+        },
+        "forth-threshold": {
+            "type": "string",
+            "defaultValue": "100"
+        },
+        "solutionName": {
+            "type": "string",
+            "defaultValue": "IOC"
+        },
+        "environmentName": {
+            "type": "string",
+            "defaultValue": "dev"
         }
     },
     "variables": {},
     "resources": [
         {
-            "comments": "This Action group is for Budget Alert notification",
-            "type": "Microsoft.Insights/ActionGroups",
-            "apiVersion": "2017-04-01",
-            "name": "Budget Alert Action",
+            "type": "Microsoft.Consumption/budgets",
+            "apiVersion": "2018-01-31",
+            "name": "[concat(parameters('solutionName'),' ', parameters('environmentName'),' ', 'Monthly Budget')]",
             "location": "Global",
-            "kind": null,
-            "tags": {
-                "Application": "[parameters('application')]",
-                "Environment": "[parameters('environment')]"
-            },
             "properties": {
-                "groupShortName": "budgetAlert",
-                "enabled": true,
-                "emailReceivers": [
-                    {
-                        "name": "emailAction_-EmailAction-",
-                        "emailAddress": "[parameters('emailAddress')]",
-                        "status": "Enabled",
-                        "useCommonAlertSchema": false
+                "category": "Cost",
+                "timeGrain": "Monthly",
+                "amount": "[parameters('subMonthlyAmount')]",
+                "timePeriod": {
+                    "startDate": "2019-08-01",
+                    "endDate": "2029-08-31"
+                },
+                "notifications": {
+                    "50%-Notification": {
+                        "enabled": true,
+                        "operator": "EqualTo",
+                        "threshold": "[parameters('first-threshold')]",
+                        "contactEmails": "[parameters('contactEmails')]"
+                    },
+                    "70%-Notification": {
+                        "enabled": true,
+                        "operator": "EqualTo",
+                        "threshold": "[parameters('second-threshold')]",
+                        "contactEmails": "[parameters('contactEmails')]"
+                    },
+                    "90%-Notification": {
+                        "enabled": true,
+                        "operator": "EqualTo",
+                        "threshold": "[parameters('third-threshold')]",
+                        "contactEmails": "[parameters('contactEmails')]"
+                    },
+                    "100%-Notification": {
+                        "enabled": true,
+                        "operator": "EqualTo",
+                        "threshold": "[parameters('forth-threshold')]",
+                        "contactEmails": "[parameters('contactEmails')]"
                     }
-                ],
-                "smsReceivers": [],
-                "webhookReceivers": [],
-                "itsmReceivers": [],
-                "azureAppPushReceivers": [],
-                "automationRunbookReceivers": [],
-                "voiceReceivers": [],
-                "logicAppReceivers": [],
-                "azureFunctionReceivers": [],
-                "armRoleReceivers": []
-            },
-            "identity": null
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Consumption/budgets",
+            "apiVersion": "2018-01-31",
+            "name": "[concat(parameters('solutionName'),' ', parameters('environmentName'),' ', 'Quarterly Budget')]",
+            "location": "Global",
+            "properties": {
+                "category": "Cost",
+                "timeGrain": "Quarterly",
+                "amount": "[parameters('subQuarterlyAmount')]",
+                "timePeriod": {
+                    "startDate": "2019-08-01",
+                    "endDate": "2029-08-31"
+                },
+                "notifications": {
+                    "50%-Notification": {
+                        "enabled": true,
+                        "operator": "EqualTo",
+                        "threshold": "[parameters('first-threshold')]",
+                        "contactEmails": "[parameters('contactEmails')]"
+                    },
+                    "70%-Notification": {
+                        "enabled": true,
+                        "operator": "EqualTo",
+                        "threshold": "[parameters('second-threshold')]",
+                        "contactEmails": "[parameters('contactEmails')]"
+                    },
+                    "90%-Notification": {
+                        "enabled": true,
+                        "operator": "EqualTo",
+                        "threshold": "[parameters('third-threshold')]",
+                        "contactEmails": "[parameters('contactEmails')]"
+                    },
+                    "100%-Notification": {
+                        "enabled": true,
+                        "operator": "EqualTo",
+                        "threshold": "[parameters('forth-threshold')]",
+                        "contactEmails": "[parameters('contactEmails')]"
+                    }
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Consumption/budgets",
+            "apiVersion": "2018-01-31",
+            "name": "[concat(parameters('solutionName'),' ', parameters('environmentName'),' ', 'Annual Budget')]",
+            "location": "Global",
+            "properties": {
+                "category": "Cost",
+                "timeGrain": "Annually",
+                "amount": "[parameters('subAnnualAmount')]",
+                "timePeriod": {
+                    "startDate": "2019-08-01",
+                    "endDate": "2029-08-31"
+                },
+                "notifications": {
+                    "50%-Notification": {
+                        "enabled": true,
+                        "operator": "EqualTo",
+                        "threshold": "[parameters('first-threshold')]",
+                        "contactEmails": "[parameters('contactEmails')]"
+                    },
+                    "70%-Notification": {
+                        "enabled": true,
+                        "operator": "EqualTo",
+                        "threshold": "[parameters('second-threshold')]",
+                        "contactEmails": "[parameters('contactEmails')]"
+                    },
+                    "90%-Notification": {
+                        "enabled": true,
+                        "operator": "EqualTo",
+                        "threshold": "[parameters('third-threshold')]",
+                        "contactEmails": "[parameters('contactEmails')]"
+                    },
+                    "100%-Notification": {
+                        "enabled": true,
+                        "operator": "EqualTo",
+                        "threshold": "[parameters('forth-threshold')]",
+                        "contactEmails": "[parameters('contactEmails')]"
+                    }
+                }
+            }
         }
     ],
     "outputs": {}
