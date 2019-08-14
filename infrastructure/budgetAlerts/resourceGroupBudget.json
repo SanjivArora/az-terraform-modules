@@ -2,7 +2,7 @@
     "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-        "contactEmails": {
+        "budgetNotificatioEmail": {
             "type": "array"
         },
         "rgMonthlyAmount": {
@@ -68,25 +68,25 @@
                         "enabled": true,
                         "operator": "EqualTo",
                         "threshold": "[parameters('first-threshold')]",
-                        "contactEmails": "[parameters('contactEmails')]"
+                        "contactEmails": "[parameters('budgetNotificatioEmail')]"
                     },
                     "70%-Notification": {
                         "enabled": true,
                         "operator": "EqualTo",
                         "threshold": "[parameters('second-threshold')]",
-                        "contactEmails": "[parameters('contactEmails')]"
+                        "contactEmails": "[parameters('budgetNotificatioEmail')]"
                     },
                     "90%-Notification": {
                         "enabled": true,
                         "operator": "EqualTo",
                         "threshold": "[parameters('third-threshold')]",
-                        "contactEmails": "[parameters('contactEmails')]"
+                        "contactEmails": "[parameters('budgetNotificatioEmail')]"
                     },
                     "100%-Notification": {
                         "enabled": true,
                         "operator": "EqualTo",
                         "threshold": "[parameters('forth-threshold')]",
-                        "contactEmails": "[parameters('contactEmails')]"
+                        "contactEmails": "[parameters('budgetNotificatioEmail')]"
                     }
                 },
                 "filters": {
@@ -112,25 +112,25 @@
                         "enabled": true,
                         "operator": "EqualTo",
                         "threshold": "[parameters('first-threshold')]",
-                        "contactEmails": "[parameters('contactEmails')]"
+                        "contactEmails": "[parameters('budgetNotificatioEmail')]"
                     },
                     "70%-Notification": {
                         "enabled": true,
                         "operator": "EqualTo",
                         "threshold": "[parameters('second-threshold')]",
-                        "contactEmails": "[parameters('contactEmails')]"
+                        "contactEmails": "[parameters('budgetNotificatioEmail')]"
                     },
                     "90%-Notification": {
                         "enabled": true,
                         "operator": "EqualTo",
                         "threshold": "[parameters('third-threshold')]",
-                        "contactEmails": "[parameters('contactEmails')]"
+                        "contactEmails": "[parameters('budgetNotificatioEmail')]"
                     },
                     "100%-Notification": {
                         "enabled": true,
                         "operator": "EqualTo",
                         "threshold": "[parameters('forth-threshold')]",
-                        "contactEmails": "[parameters('contactEmails')]"
+                        "contactEmails": "[parameters('budgetNotificatioEmail')]"
                     }
                 },
                 "filters": {
@@ -156,25 +156,25 @@
                         "enabled": true,
                         "operator": "EqualTo",
                         "threshold": "[parameters('first-threshold')]",
-                        "contactEmails": "[parameters('contactEmails')]"
+                        "contactEmails": "[parameters('budgetNotificatioEmail')]"
                     },
                     "70%-Notification": {
                         "enabled": true,
                         "operator": "EqualTo",
                         "threshold": "[parameters('second-threshold')]",
-                        "contactEmails": "[parameters('contactEmails')]"
+                        "contactEmails": "[parameters('budgetNotificatioEmail')]"
                     },
                     "90%-Notification": {
                         "enabled": true,
                         "operator": "EqualTo",
                         "threshold": "[parameters('third-threshold')]",
-                        "contactEmails": "[parameters('contactEmails')]"
+                        "contactEmails": "[parameters('budgetNotificatioEmail')]"
                     },
                     "100%-Notification": {
                         "enabled": true,
                         "operator": "EqualTo",
                         "threshold": "[parameters('forth-threshold')]",
-                        "contactEmails": "[parameters('contactEmails')]"
+                        "contactEmails": "[parameters('budgetNotificatioEmail')]"
                     }
                 },
                 "filters": {
