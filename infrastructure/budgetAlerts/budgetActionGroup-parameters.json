@@ -1,15 +1,26 @@
 {
-  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
-  "contentVersion": "1.0.0.0",
-  "parameters": {
-    "emailAddress": {
-      "value": "ajit.garikipati@equinox.co.nz"
-    },
-    "environment": {
-      "value": "acc"
-    },
-    "application": {
-      "value": "budgetAlert"
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "contactEmails": {
+            "value": [
+                "ajit.garikipati@equinox.co.nz"
+            ]
+        },
+        "subMonthlyAmount": {
+            "value": "1000"
+        },
+        "subQuarterlyAmount": {
+            "value": "1000"
+        },
+        "subAnnualAmount": {
+            "value": "1000"
+        },
+        "solutionName":{
+            "value": "IOC"
+        },
+        "environmentName":{
+            "value": "dev"
+        }
     }
-  }
 }
