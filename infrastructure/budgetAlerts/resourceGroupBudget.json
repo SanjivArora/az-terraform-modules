@@ -1,0 +1,187 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "contactEmails": {
+            "type": "array"
+        },
+        "rgMonthlyAmount": {
+            "type": "string",
+            "defaultValue": "1000"
+        },
+        "rgQuarterlyAmount": {
+            "type": "string",
+            "defaultValue": "1000"
+        },
+        "rgAnnualAmount": {
+            "type": "string",
+            "defaultValue": "1000"
+        },
+        "first-threshold": {
+            "type": "string",
+            "defaultValue": "50"
+        },
+        "second-threshold": {
+            "type": "string",
+            "defaultValue": "70"
+        },
+        "third-threshold": {
+            "type": "string",
+            "defaultValue": "90"
+        },
+        "forth-threshold": {
+            "type": "string",
+            "defaultValue": "90"
+        },
+        "resourceGroups": {
+            "type": "array",
+            "defaultValue": [
+                "z-adhb-ioc-rg-dev"
+            ]
+        },
+        "solutionName":{
+            "type": "string",
+            "defaultValue": "IOC"
+        },
+        "environmentName":{
+            "type": "string",
+            "defaultValue": "dev"
+        }
+    },
+    "variables": {},
+    "resources": [
+        {
+            "type": "Microsoft.Consumption/budgets",
+            "apiVersion": "2018-01-31",
+            "name": "IOC Resource Group Monthly Budget",
+            "location": "Global",
+            "properties": {
+                "category": "Cost",
+                "timeGrain": "Monthly",
+                "amount": "[parameters('rgMonthlyAmount')]",
+                "timePeriod": {
+                    "startDate": "2019-08-01",
+                    "endDate": "2029-08-31"
+                },
+                "notifications": {
+                    "50%-Notification": {
+                        "enabled": true,
+                        "operator": "EqualTo",
+                        "threshold": "[parameters('first-threshold')]",
+                        "contactEmails": "[parameters('contactEmails')]"
+                    },
+                    "70%-Notification": {
+                        "enabled": true,
+                        "operator": "EqualTo",
+                        "threshold": "[parameters('second-threshold')]",
+                        "contactEmails": "[parameters('contactEmails')]"
+                    },
+                    "90%-Notification": {
+                        "enabled": true,
+                        "operator": "EqualTo",
+                        "threshold": "[parameters('third-threshold')]",
+                        "contactEmails": "[parameters('contactEmails')]"
+                    },
+                    "100%-Notification": {
+                        "enabled": true,
+                        "operator": "EqualTo",
+                        "threshold": "[parameters('forth-threshold')]",
+                        "contactEmails": "[parameters('contactEmails')]"
+                    }
+                },
+                "filters": {
+                    "resourceGroups": "[parameters('resourceGroups')]"
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Consumption/budgets",
+            "apiVersion": "2018-01-31",
+            "name": "IOC Resource Group Quarterly Budget",
+            "location": "Global",
+            "properties": {
+                "category": "Cost",
+                "timeGrain": "Quarterly",
+                "amount": "[parameters('rgQuarterlyAmount')]",
+                "timePeriod": {
+                    "startDate": "2019-08-01",
+                    "endDate": "2029-08-31"
+                },
+                "notifications": {
+                    "50%-Notification": {
+                        "enabled": true,
+                        "operator": "EqualTo",
+                        "threshold": "[parameters('first-threshold')]",
+                        "contactEmails": "[parameters('contactEmails')]"
+                    },
+                    "70%-Notification": {
+                        "enabled": true,
+                        "operator": "EqualTo",
+                        "threshold": "[parameters('second-threshold')]",
+                        "contactEmails": "[parameters('contactEmails')]"
+                    },
+                    "90%-Notification": {
+                        "enabled": true,
+                        "operator": "EqualTo",
+                        "threshold": "[parameters('third-threshold')]",
+                        "contactEmails": "[parameters('contactEmails')]"
+                    },
+                    "100%-Notification": {
+                        "enabled": true,
+                        "operator": "EqualTo",
+                        "threshold": "[parameters('forth-threshold')]",
+                        "contactEmails": "[parameters('contactEmails')]"
+                    }
+                },
+                "filters": {
+                    "resourceGroups": "[parameters('resourceGroups')]"
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Consumption/budgets",
+            "apiVersion": "2018-01-31",
+            "name": "IOC Resource Group Annual Budget",
+            "location": "Global",
+            "properties": {
+                "category": "Cost",
+                "timeGrain": "Annually",
+                "amount": "[parameters('rgAnnualAmount')]",
+                "timePeriod": {
+                    "startDate": "2019-08-01",
+                    "endDate": "2029-08-31"
+                },
+                "notifications": {
+                    "50%-Notification": {
+                        "enabled": true,
+                        "operator": "EqualTo",
+                        "threshold": "[parameters('first-threshold')]",
+                        "contactEmails": "[parameters('contactEmails')]"
+                    },
+                    "70%-Notification": {
+                        "enabled": true,
+                        "operator": "EqualTo",
+                        "threshold": "[parameters('second-threshold')]",
+                        "contactEmails": "[parameters('contactEmails')]"
+                    },
+                    "90%-Notification": {
+                        "enabled": true,
+                        "operator": "EqualTo",
+                        "threshold": "[parameters('third-threshold')]",
+                        "contactEmails": "[parameters('contactEmails')]"
+                    },
+                    "100%-Notification": {
+                        "enabled": true,
+                        "operator": "EqualTo",
+                        "threshold": "[parameters('forth-threshold')]",
+                        "contactEmails": "[parameters('contactEmails')]"
+                    }
+                },
+                "filters": {
+                    "resourceGroups": "[parameters('resourceGroups')]"
+                }
+            }
+        }
+    ],
+    "outputs": {}
+}

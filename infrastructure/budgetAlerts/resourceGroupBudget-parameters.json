@@ -1,0 +1,31 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "contactEmails": {
+            "value": [
+                "ajit.garikipati@equinox.co.nz"
+            ]
+        },
+        "rgMonthlyAmount": {
+            "value": "1000"
+        },
+        "rgQuarterlyAmount": {
+            "value": "1000"
+        },
+        "rgAnnualAmount": {
+            "value": "1000"
+        },
+        "resourceGroups": {
+            "value": [
+                "z-adhb-ioc-rg-dev"
+            ]
+        },
+        "solutionName":{
+            "value": "IOC"
+        },
+        "environmentName":{
+            "value": "dev"
+        }
+    }
+}
